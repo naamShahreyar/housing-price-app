@@ -4,3 +4,5 @@ scikit-learn
 streamlit 
 fastapi
 pydantic
+matplotlib
+seaborn
