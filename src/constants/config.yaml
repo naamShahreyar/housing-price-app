@@ -1,0 +1,11 @@
+artifacts:
+  raw_data: artifacts/raw/data.csv
+  processed_dir: artifacts/processed
+  model_path: backend/model/model.pkl
+
+data:
+  test_size: 0.2
+  random_state: 42
+
+model:
+  n_estimators: 100
