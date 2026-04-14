@@ -40,8 +40,9 @@ class DataProcessing:
 
             logger.info("Data processing completed")
             
+            return self.processed_dir
+        
         except Exception as e:
             logger.error(f"Error during data processing: {e}")
             raise e
 
-        return self.processed_dir
