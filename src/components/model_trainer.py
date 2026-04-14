@@ -5,6 +5,7 @@ from sklearn.metrics import root_mean_squared_error
 import pandas as pd
 import joblib
 import os
+import json
 
 logger = get_logger(__name__)
 class ModelTrainer:
@@ -38,6 +39,16 @@ class ModelTrainer:
 
             os.makedirs(os.path.dirname(self.model_path), exist_ok=True)
             joblib.dump(model, self.model_path)
+            
+            feature_path = os.path.join(
+                                            os.path.dirname(self.model_path),
+                                            "features.json"
+                                        )
+
+            with open(feature_path, "w") as f:
+                json.dump(list(X_train.columns), f)
+
+            logger.info("Feature names saved successfully")
 
             logger.info("Model saved successfully")
 
