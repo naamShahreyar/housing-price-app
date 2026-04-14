@@ -12,15 +12,21 @@ class DataIngestion:
         self.raw_path = config["artifacts"]["raw_data"]
 
     def run(self):
-        logger.info("Starting data ingestion")
+        
+        try:
+            logger.info("Starting data ingestion")
 
-        os.makedirs(os.path.dirname(self.raw_path), exist_ok=True)
+            os.makedirs(os.path.dirname(self.raw_path), exist_ok=True)
 
-        data = fetch_california_housing(as_frame=True)
-        df = pd.concat([data.data, data.target.rename("target")], axis=1)
+            data = fetch_california_housing(as_frame=True)
+            df = pd.concat([data.data, data.target.rename("target")], axis=1)
 
-        df.to_csv(self.raw_path, index=False)
+            df.to_csv(self.raw_path, index=False)
 
-        logger.info(f"Data saved to {self.raw_path}")
+            logger.info(f"Data saved to {self.raw_path}")
+            
+            return self.raw_path
+        except Exception as e:
+            logger.error(f"Error during data ingestion: {e}")
+            raise e
 
-        return self.raw_path
