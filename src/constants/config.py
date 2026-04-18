@@ -1,9 +1,11 @@
 import yaml
+import os
 
+def load_config():
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(base_dir, "constants", "config.yaml")
 
-def load_config(path="src\constants\config.yaml"):
     with open(path, "r") as f:
-        config = yaml.safe_load(f)
-    return config
+        return yaml.safe_load(f)
 
 config = load_config()
