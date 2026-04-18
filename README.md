@@ -2,27 +2,36 @@
 
 ##  Overview
 
-This project demonstrates a **production-style Machine Learning pipeline** for predicting house prices using the California Housing dataset.
+This project demonstrates a **production-ready Machine Learning system** for predicting house prices using the California Housing dataset.
 
-It covers the **complete ML lifecycle**:
+It implements a **full-stack ML application**, including:
 
-* Data ingestion
-* Data processing
+* Data pipeline
 * Model training
-* Model serving via FastAPI
+* API serving (FastAPI)
+* Interactive UI (Streamlit)
+* Containerized deployment (Docker)
 
-The system is designed with **modularity, reproducibility, and scalability** in mind, following real-world MLOps practices.
+---
+
+##  System Architecture
+
+```
+User → Streamlit UI → FastAPI Backend → Model → Prediction
+```
 
 ---
 
 ##  Key Features
 
-*  Modular pipeline (ingestion → preprocessing → training)
-*  Config-driven architecture (YAML-based)
-*  Structured logging for observability
-*  Feature-safe inference using `features.json`
-*  FastAPI backend for real-time predictions
-*  Clean separation of concerns (API vs business logic)
+* End-to-end ML pipeline (ingestion → preprocessing → training)
+* Config-driven architecture (YAML-based)
+* Centralized structured logging
+* Feature-safe inference
+* REST API using FastAPI
+* Interactive UI using Streamlit
+* Fully containerized using Docker
+* Separation of training and inference environments
 
 ---
 
@@ -32,12 +41,12 @@ The system is designed with **modularity, reproducibility, and scalability** in 
 house-price-app/
 │
 ├── backend/
-│   ├── main.py            # FastAPI app
-│   ├── schema.py          # Request/response schema
-│   ├── service.py         # Prediction logic
-│   └── model/
-│       ├── model.pkl
-│       └── features.json
+│   ├── main.py
+│   ├── schema.py
+│   ├── service.py
+│
+├── frontend/
+│   └── app.py
 │
 ├── src/
 │   ├── components/
@@ -55,20 +64,24 @@ house-price-app/
 │   └── logger.py
 │
 ├── artifacts/
+│   ├── model/
 │   ├── raw/
 │   ├── processed/
 │   └── logs/
 │
-└── notebooks/
+├── docker-compose.yml
+├── requirements.txt
+├── requirements-prod.txt
+└── README.md
 ```
 
 ---
 
-##  Setup Instructions
+##  Setup Instructions (Local)
 
 ### 1️ Clone the repository
 
-```bash
+```
 git clone <your-repo-url>
 cd house-price-app
 ```
@@ -77,7 +90,7 @@ cd house-price-app
 
 ### 2️ Create environment
 
-```bash
+```
 conda create -p venv python=3.11
 conda activate ./venv
 ```
@@ -86,7 +99,7 @@ conda activate ./venv
 
 ### 3️ Install dependencies
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
@@ -94,7 +107,7 @@ pip install -r requirements.txt
 
 ##  Run Training Pipeline
 
-```bash
+```
 python -m src.pipeline.training_pipeline
 ```
 
@@ -103,33 +116,54 @@ This will:
 * Ingest data
 * Process data
 * Train model
-* Save model + features
+* Save model artifacts
 
 ---
 
-##  Run FastAPI Server
+##  Run Application (Without Docker)
 
-```bash
+### Start Backend
+
+```
 uvicorn backend.main:app --reload
 ```
 
-Open:
+### Start Frontend
 
 ```
-http://127.0.0.1:8000/docs
+streamlit run frontend/app.py
 ```
+
+---
+
+##  Run with Docker (Recommended)
+
+### Build and run
+
+```
+docker-compose up --build
+```
+
+---
+
+### Access services
+
+* UI → http://localhost:8501
+* API → http://localhost:8000/docs
 
 ---
 
 ##  Prediction API
 
-### Endpoint:
+### Endpoint
 
 ```
 POST /predict
 ```
 
-### Sample Request:
+---
+
+### Sample Request
 
 ```json
 {
@@ -144,7 +178,9 @@ POST /predict
 }
 ```
 
-### Response:
+---
+
+### Response
 
 ```json
 {
@@ -156,25 +192,31 @@ POST /predict
 
 ##  Design Decisions
 
-### ✔ Feature Ordering
+### ✔ Feature Consistency
 
-* Stored in `features.json`
-* Ensures training–inference consistency
+* Ensured via schema validation (Pydantic)
+* Prevents training–inference mismatch
 
 ### ✔ Config-Driven System
 
-* All paths and parameters defined in YAML
-* No hardcoding
+* YAML-based configuration
+* No hardcoded paths
 
 ### ✔ Service Layer
 
-* Business logic separated from API
-* Easier to maintain and scale
+* Separates API from business logic
+* Improves maintainability
 
 ### ✔ Logging
 
-* Centralized logging across pipeline and API
+* Centralized logging
 * Useful for debugging and monitoring
+
+### ✔ Containerization
+
+* Separate frontend & backend containers
+* Lightweight production dependencies
+* Reproducible environment
 
 ---
 
@@ -188,27 +230,30 @@ POST /predict
 
 ##  Future Improvements
 
-* Add Streamlit UI
-* Dockerize the application
-* Integrate experiment tracking (MLflow)
-* Add data & model versioning (DVC)
-* Deploy on cloud (Azure / AWS)
+* Experiment tracking (MLflow)
+* Data & model versioning (DVC)
+* Cloud deployment (Azure / AWS)
+* CI/CD pipeline
+* Monitoring & alerting
 
 ---
 
 ##  Learnings
 
-This project helped in understanding:
-
 * Building end-to-end ML systems
 * Structuring production-ready code
-* Designing APIs for ML models
-* Handling feature consistency
-* Importance of logging and configuration
+* API-based model serving
+* Containerization with Docker
+* Handling real-world deployment issues
 
 ---
 
+##  Demo
+
+*Add screenshots or demo video here*
+
+---
 
 ##  License
 
-This project is open-source and available under the MIT License.
+MIT License
